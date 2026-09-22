@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>A Little Message For You ❤️</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pink: #ff3d81;
+      --light-pink: #ff8fba;
+      --purple: #8b3dff;
+      --white: #ffffff;
+      --glass: rgba(255,255,255,0.08);
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--white);
+
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,61,129,.25), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(139,61,255,.25), transparent 30%),
+        linear-gradient(135deg, #08000f, #180014, #08000f);
+    }
+
+    /* BACKGROUND */
+
+    .background-glow {
+      position: fixed;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: .25;
+      pointer-events: none;
+    }
+
+    .glow-one {
+      background: #ff2478;
+      top: -150px;
+      left: -150px;
+    }
+
+    .glow-two {
+      background: #7b2cff;
+      right: -150px;
+      bottom: -150px;
+    }
+
+    /* MAIN */
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      padding: 35px 28px;
+      text-align: center;
+
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 28px;
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      box-shadow:
+        0 25px 80px rgba(0,0,0,.45),
+        inset 0 0 30px rgba(255,255,255,.02);
+
+      animation: cardIn .8s ease;
+    }
+
+    /* INTRO */
+
+    #intro {
+      display: block;
+    }
+
+    .main-heart {
+      font-size: 75px;
+      margin-bottom: 15px;
+      animation: heartbeat 1.5s infinite;
+      filter: drop-shadow(0 0 25px rgba(255,50,120,.8));
+    }
+
+    .small-text {
+      color: #ff9fc2;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 8vw, 48px);
+      margin-bottom: 15px;
+    }
+
+    .intro-text {
+      color: #d9c8d2;
+      line-height: 1.7;
+      font-size: 16px;
+      margin-bottom: 28px;
+    }
+
+    /* BUTTON */
+
+    .primary-btn {
+      border: none;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      padding: 15px 35px;
+      border-radius: 50px;
+      cursor: pointer;
+
+      background: linear-gradient(
+        135deg,
+        #ff2878,
+        #ff5c9b
+      );
+
+      box-shadow:
+        0 8px 30px rgba(255,40,120,.35);
+
+      transition: .3s ease;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow:
+        0 12px 40px rgba(255,40,120,.55);
+    }
+
+    .primary-btn:active {
+      transform: scale(.96);
+    }
+
+    /* QUIZ */
+
+    #quiz {
+      display: none;
+    }
+
+    .progress-area {
+      margin-bottom: 25px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      color: #cdbbc5;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,.1);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 25%;
+      border-radius: 20px;
+      background: linear-gradient(
+        90deg,
+        #ff2878,
+        #ff8ab5
+      );
+
+      transition: width .4s ease;
+    }
+
+    .question-number {
+      color: #ff7fab;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    #question {
+      font-size: clamp(23px, 6vw, 32px);
+      line-height: 1.3;
+      margin-bottom: 25px;
+    }
+
+    .answers {
+      display: grid;
+      gap: 13px;
+    }
+
+    .answer {
+      width: 100%;
+      padding: 15px 18px;
+
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,.12);
+
+      background: rgba(255,255,255,.055);
+      color: white;
+
+      font-size: 16px;
+      cursor: pointer;
+
+      transition: .3s ease;
+    }
+
+    .answer:hover {
+      background: rgba(255,50,120,.18);
+      border-color: rgba(255,100,160,.6);
+      transform: translateY(-2px);
+    }
+
+    /* FINAL */
+
+    #final {
+      display: none;
+    }
+
+    .final-heart {
+      font-size: 90px;
+      margin-bottom: 15px;
+      animation: heartbeat 1.2s infinite;
+      filter: drop-shadow(0 0 35px #ff2478);
+    }
+
+    .final-title {
+      font-size: clamp(42px, 11vw, 72px);
+      font-weight: 900;
+
+      background: linear-gradient(
+        90deg,
+        #ff3d81,
+        #ffffff,
+        #ff75a8
+      );
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      margin-bottom: 18px;
+    }
+
+    .final-message {
+      color: #e8d8df;
+      line-height: 1.8;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .signature {
+      color: #ff91b9;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    /* FLOATING HEARTS */
+
+    .heart {
+      position: fixed;
+      bottom: -40px;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatUp linear forwards;
+    }
+
+    /* SPARKLES */
+
+    .sparkle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      opacity: .6;
+      animation: sparkle 2s infinite alternate;
+      pointer-events: none;
+    }
+
+    /* ANIMATIONS */
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      20% {
+        transform: scale(1.12);
+      }
+
+      35% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.08);
+      }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: .9;
+      }
+
+      100% {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes sparkle {
+      from {
+        transform: scale(.5);
+        opacity: .2;
+      }
+
+      to {
+        transform: scale(1.8);
+        opacity: 1;
+      }
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 480px) {
+
+      .card {
+        padding: 30px 20px;
+        border-radius: 24px;
+      }
+
+      .main-heart {
+        font-size: 65px;
+      }
+
+      .intro-text {
+        font-size: 15px;
+      }
+
+      .answer {
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="background-glow glow-one"></div>
+  <div class="background-glow glow-two"></div>
+
+  <div class="app">
+
+    <div class="card">
+
+      <!-- ========================= -->
+      <!-- INTRO SCREEN -->
+      <!-- ========================= -->
+
+      <section id="intro">
+
+        <div class="main-heart">
+          💗
+        </div>
+
+        <div class="small-text">
+          A little message
+        </div>
+
+        <h1>
+          Hey... 👀
+        </h1>
+
+        <p class="intro-text">
+          I have a few little questions for you.
+          <br>
+          Nothing difficult...
+          <br>
+          Just answer honestly. ❤️
+        </p>
+
+        <button
+          class="primary-btn"
+          onclick="startQuiz()"
+        >
+          Let's Begin 💕
+        </button>
+
+      </section>
+
+
+      <!-- ========================= -->
+      <!-- QUESTION SCREEN -->
+      <!-- ========================= -->
+
+      <section id="quiz">
+
+        <div class="progress-area">
+
+          <div class="progress-info">
+
+            <span id="progressText">
+              Question 1 of 4
+            </span>
+
+            <span>
+              ❤️
+            </span>
+
+          </div>
+
+          <div class="progress-bar">
+
+            <div
+              class="progress"
+              id="progress"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="question-number"
+          id="questionNumber"
+        >
+          QUESTION 01
+        </div>
+
+
+        <h2 id="question">
+          Do you believe in love?
+        </h2>
+
+
+        <div
+          class="answers"
+          id="answers"
+        >
+
+          <button
+            class="answer"
+            onclick="answerQuestion(0)"
+          >
+            Yes ❤️
+          </button>
+
+          <button
+            class="answer"
+            onclick="answerQuestion(1)"
+          >
+            Maybe 👀
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ========================= -->
+      <!-- FINAL SCREEN -->
+      <!-- ========================= -->
+
+      <section id="final">
+
+        <div class="final-heart">
+          ❤️
+        </div>
+
+        <div class="small-text">
+          One last thing...
+        </div>
+
+        <h1 class="final-title">
+          I LOVE YOU
+        </h1>
+
+        <p class="final-message">
+          Maybe you knew this was coming...
+          <br><br>
+          But I still wanted to say it.
+          <br>
+          Some feelings are just too special
+          to keep hidden. 💗
+        </p>
+
+        <div class="signature">
+          Made with ❤️
+        </div>
+
+        <br>
+
+        <button
+          class="primary-btn"
+          onclick="replay()"
+        >
+          Replay ♻️
+        </button>
+
+      </section>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /* =========================
+       QUESTIONS
+    ========================= */
+
+    const questions = [
+
+      {
+        question: "Do you believe in love?",
+        answers: [
+          "Yes ❤️",
+          "Maybe 👀"
+        ]
+      },
+
+      {
+        question: "Can one person make your whole day better?",
+        answers: [
+          "Definitely 💕",
+          "I think so 😊"
+        ]
+      },
+
+      {
+        question: "Do you have someone special in your heart?",
+        answers: [
+          "Maybe... 😳",
+          "Yes ❤️"
+        ]
+      },
+
+      {
+        question: "Are you ready for the last question?",
+        answers: [
+          "YES 💗",
+          "I'm ready ❤️"
+        ]
+      }
+
+    ];
+
+
+    let currentQuestion = 0;
+
+
+    /* =========================
+       START QUIZ
+    ========================= */
+
+    function startQuiz() {
+
+      document.getElementById("intro").style.display = "none";
+
+      document.getElementById("quiz").style.display = "block";
+
+      currentQuestion = 0;
+
+      showQuestion();
+
+      createHearts(12);
+    }
+
+
+    /* =========================
+       SHOW QUESTION
+    ========================= */
+
+    function showQuestion() {
+
+      const data = questions[currentQuestion];
+
+      const question =
+        document.getElementById("question");
+
+      const answers =
+        document.getElementById("answers");
+
+      const number =
+        document.getElementById("questionNumber");
+
+      const progressText =
+        document.getElementById("progressText");
+
+      const progress =
+        document.getElementById("progress");
+
+
+      question.style.opacity = "0";
+
+      setTimeout(() => {
+
+        question.innerText = data.question;
+
+        question.style.opacity = "1";
+
+      }, 120);
+
+
+      number.innerText =
+        "QUESTION " +
+        String(currentQuestion + 1).padStart(2, "0");
+
+
+      progressText.innerText =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+      progress.style.width =
+        ((currentQuestion + 1) / questions.length * 100)
+        + "%";
+
+
+      answers.innerHTML = "";
+
+
+      data.answers.forEach((answer, index) => {
+
+        const button =
+          document.createElement("button");
+
+        button.className = "answer";
+
+        button.innerText = answer;
+
+        button.onclick = () =>
+          answerQuestion(index);
+
+        answers.appendChild(button);
+
+      });
+
+    }
+
+
+    /* =========================
+       ANSWER
+    ========================= */
+
+    function answerQuestion(index) {
+
+      createHearts(5);
+
+      currentQuestion++;
+
+
+      if (currentQuestion >= questions.length) {
+
+        showFinal();
+
+      } else {
+
+        showQuestion();
+
+      }
+
+    }
+
+
+    /* =========================
+       FINAL
+    ========================= */
+
+    function showFinal() {
+
+      document.getElementById("quiz").style.display = "none";
+
+      document.getElementById("final").style.display = "block";
+
+      createHearts(45);
+
+      createSparkles(25);
+
+    }
+
+
+    /* =========================
+       REPLAY
+    ========================= */
+
+    function replay() {
+
+      document.getElementById("final").style.display = "none";
+
+      document.getElementById("intro").style.display = "block";
+
+      currentQuestion = 0;
+
+    }
+
+
+    /* =========================
+       FLOATING HEARTS
+    ========================= */
+
+    function createHearts(amount) {
+
+      const heartList = [
+        "❤️",
+        "💗",
+        "💕",
+        "💖",
+        "💘",
+        "💝"
+      ];
+
+
+      for (let i = 0; i < amount; i++) {
+
+        const heart =
+          document.createElement("div");
+
+        heart.className = "heart";
+
+        heart.innerText =
+          heartList[
+            Math.floor(
+              Math.random() * heartList.length
+            )
+          ];
+
+
+        heart.style.left =
+          Math.random() * 100 + "vw";
+
+
+        heart.style.fontSize =
+          (15 + Math.random() * 28) + "px";
+
+
+        heart.style.animationDuration =
+          (4 + Math.random() * 5) + "s";
+
+
+        heart.style.animationDelay =
+          Math.random() * 2 + "s";
+
+
+        document.body.appendChild(heart);
+
+
+        setTimeout(() => {
+
+          heart.remove();
+
+        }, 10000);
+
+      }
+
+    }
+
+
+    /* =========================
+       SPARKLES
+    ========================= */
+
+    function createSparkles(amount) {
+
+      for (let i = 0; i < amount; i++) {
+
+        const sparkle =
+          document.createElement("div");
+
+        sparkle.className = "sparkle";
+
+
+        sparkle.style.left =
+          Math.random() * 100 + "vw";
+
+
+        sparkle.style.top =
+          Math.random() * 100 + "vh";
+
+
+        sparkle.style.animationDelay =
+          Math.random() * 2 + "s";
+
+
+        document.body.appendChild(sparkle);
+
+
+        setTimeout(() => {
+
+          sparkle.remove();
+
+        }, 5000);
+
+      }
+
+    }
+
+
+    /* =========================
+       BACKGROUND HEARTS
+    ========================= */
+
+    setInterval(() => {
+
+      createHearts(1);
+
+    }, 1200);
+
+  </script>
+
+</body>
+</html>
